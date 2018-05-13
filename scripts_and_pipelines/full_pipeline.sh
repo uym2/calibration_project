@@ -10,4 +10,6 @@ outputDir=$5 # where to output the files
 
 echo $outputDir
 
-$DIR/create_replicates.sh $timeTree $subsTree $sampleSize $nreps $outputDir true
+#$DIR/create_replicates.sh $timeTree $subsTree $sampleSize $nreps $outputDir true
+#$DIR/run_lsd.sh $outputDir $nreps true
+$DIR/run_logDating.sh $outputDir $nreps true

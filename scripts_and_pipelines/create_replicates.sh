@@ -10,7 +10,11 @@ jobID=$6
 for i in $(seq 1 $nreps); do
     d=$outputDir/rep$(printf "%02d" $i)
     mkdir $d
-    sample_with_outgroups.py -t $timeTree -i $sampleSize -o 1 -r 1 -e $d/$jobID.time.tre -f $d/$jobID.info
-    taxonList=`grep "Ingroups\|Outgroups" $d/$jobID.info | sed -e "s/Ingroups: //g" -e "s/Outgroups: //g"` 
+    sample_with_outgroups.py -t $timeTree -i $sampleSize -o 1 -r 1 -e $d/$jobID.time.OG.tre -f $d/$jobID.info -p $d/$jobID.time.tre
+    #taxonList=`grep "Ingroups\|Outgroups" $d/$jobID.info | sed -e "s/Ingroups: //g" -e "s/Outgroups: //g"` 
+    taxonList=`grep "Ingroups" $d/$jobID.info | sed -e "s/Ingroups: //g"` 
     prune_tree.py -i $subsTree -o $d/$jobID.subs.tre -v -l "$taxonList"
+
+    nw_distance -n -mr -si $d/$jobID.time.tre | sort -n > $d/$jobID.nodeAge.txt
+    echo $sampleSize > $d/$jobID.samplingTime.txt; nw_distance -n -mr -sf $d/$jobID.time.tre | sort -n >> $d/$jobID.samplingTime.txt
 done
